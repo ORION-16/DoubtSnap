@@ -92,7 +92,7 @@ Rules:
   }
 };
 
-export const processPDF = async (pdfText, filename) => {
+export const summarizePDF = async (pdfText, filename) => {
   const prompt = `
 You are DoubtSnap, an expert AI tutor.
 
@@ -103,7 +103,33 @@ ${pdfText.substring(0, 15000)}
 Analyze this document and respond ONLY with a valid JSON object in this exact format, no markdown, no backticks:
 {
   "summary": "a comprehensive 3-4 paragraph summary of the document",
-  "keyPoints": ["key point 1", "key point 2", "key point 3", "key point 4", "key point 5"],
+  "keyPoints": ["key point 1", "key point 2", "key point 3", "key point 4", "key point 5"]
+}
+
+Rules:
+- Never include markdown or code fences in your response
+`;
+
+  try {
+    const geminiModel = getModel();
+    const result = await geminiModel.generateContent(prompt);
+    const text = result.response.text().trim();
+    return safeParseJSON(text);
+  } catch (error) {
+    throw new Error(`Gemini PDF Summary error: ${error.message}`);
+  }
+};
+
+export const generateQuiz = async (pdfText, filename) => {
+  const prompt = `
+You are DoubtSnap, an expert AI tutor.
+
+A student has uploaded a PDF document titled "${filename}". Here is the extracted text:
+
+${pdfText.substring(0, 15000)}
+
+Create a quiz based on this document and respond ONLY with a valid JSON object in this exact format, no markdown, no backticks:
+{
   "quiz": [
     {
       "question": "question based on the document",
@@ -125,6 +151,6 @@ Rules:
     const text = result.response.text().trim();
     return safeParseJSON(text);
   } catch (error) {
-    throw new Error(`Gemini PDF error: ${error.message}`);
+    throw new Error(`Gemini Quiz error: ${error.message}`);
   }
 };

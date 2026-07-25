@@ -9,6 +9,11 @@ export const aiRateLimiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
-  // Key by user ID if logged in, otherwise fall back to IP
-  keyGenerator: (req) => req.user?._id?.toString() || req.ip
+  // Key by user ID (routes are protected, so user is always available)
+  keyGenerator: (req) => {
+    if (req.user && req.user._id) {
+      return req.user._id.toString();
+    }
+    return 'anonymous';
+  }
 });

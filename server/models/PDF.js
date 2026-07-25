@@ -21,7 +21,18 @@ const pdfSchema = new mongoose.Schema({
     required: true
   },
   keyPoints: [String],
-  quiz: [quizQuestionSchema]
+  rawText: {
+    type: String,
+    select: false
+  },
+  quizGenerated: {
+    type: Boolean,
+    default: false
+  },
+  quiz: {
+    type: [quizQuestionSchema],
+    default: []
+  }
 }, { timestamps: true });
 
 export default mongoose.model('PDF', pdfSchema);
