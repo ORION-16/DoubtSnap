@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import doubtRoutes from './routes/doubtRoutes.js';
-
+import pdfRoutes from './routes/pdfRoutes.js';
 
 // Load env variables
 dotenv.config();
@@ -36,6 +36,8 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 
 app.use('/api/doubt', doubtRoutes);
+
+app.use('/api/pdf', pdfRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
