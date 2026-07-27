@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import api from '../api/axios';
 import { gsap } from '../lib/gsap';
 import toast from 'react-hot-toast';
