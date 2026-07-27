@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const apiBaseURL = import.meta.env.VITE_API_URL?.replace(/\/+$/, '')
+  || (import.meta.env.PROD
+    ? 'https://doubtsnap.onrender.com/api'
+    : 'http://localhost:8000/api');
+
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: apiBaseURL,
   headers: {
     'Content-Type': 'application/json',
   },
